@@ -15,7 +15,7 @@ spec:
         app: redis
     spec:
       containers:
-        - name: littra-redis
+        - name: project-redis
           image: redis:5.0.7-alpine
           ports:
             - containerPort: 6379
@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: littra-redis-service
+  name: project-redis-service
 spec:
   selector:
     app: redis

@@ -4,7 +4,7 @@ metadata:
   name: mongo-express-ingress
 spec:
   rules:
-  - host: mongo.littra.in
+  - host: mongo.project.in
     http:
       paths:
       - backend:

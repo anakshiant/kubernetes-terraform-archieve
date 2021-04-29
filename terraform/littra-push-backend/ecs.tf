@@ -1,8 +1,8 @@
-resource "aws_ecs_cluster" "littra_push_cluster" {
-  name = "littra-push-cluster"
+resource "aws_ecs_cluster" "project_push_cluster" {
+  name = "project-push-cluster"
 
   tags = {
-      Name        = "littra-push-server"
+      Name        = "project-push-server"
       Environment = var.environment
       Creator     = "Terraform"
   }
@@ -17,13 +17,13 @@ data "template_file" "environment_variable" {
   }
 }
 
-resource "aws_ecs_task_definition" "littra_push_task" {
-  family                   = "littra_push_task" # Naming our first task
+resource "aws_ecs_task_definition" "project_push_task" {
+  family                   = "project_push_task" # Naming our first task
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "littra_push_task",
-      "image": "${data.aws_ecr_repository.littra_push_server.repository_url}",
+      "name": "project_push_task",
+      "image": "${data.aws_ecr_repository.project_push_server.repository_url}",
       "essential": true,
       "portMappings": [
         {
@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "littra_push_task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "littra-push-log-group",
+          "awslogs-group": "project-push-log-group",
           "awslogs-region": "ap-south-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -51,22 +51,22 @@ resource "aws_ecs_task_definition" "littra_push_task" {
   cpu                      = 256         # Specifying the CPU our container requires
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
   tags = {
-      Name        = "littra-push-server"
+      Name        = "project-push-server"
       Environment = var.environment
       Creator     = "Terraform"
   }
 }
 
 resource "aws_ecs_service" "my_first_service" {
-  name            = "littra-push-service"                             # Naming our first service
-  cluster         = "${aws_ecs_cluster.littra_push_cluster.id}"             # Referencing our created Cluster
-  task_definition = "${aws_ecs_task_definition.littra_push_task.arn}" # Referencing the task our service will spin up
+  name            = "project-push-service"                             # Naming our first service
+  cluster         = "${aws_ecs_cluster.project_push_cluster.id}"             # Referencing our created Cluster
+  task_definition = "${aws_ecs_task_definition.project_push_task.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
   desired_count   = 1 # Setting the number of containers we want deployed to 3
   
   load_balancer {
-    target_group_arn = "${aws_lb_target_group.littra_push_target_group.arn}" # Referencing our target group
-    container_name   = "${aws_ecs_task_definition.littra_push_task.family}"
+    target_group_arn = "${aws_lb_target_group.project_push_target_group.arn}" # Referencing our target group
+    container_name   = "${aws_ecs_task_definition.project_push_task.family}"
     container_port   = 5000 # Specifying the container port
   }
   
@@ -76,7 +76,7 @@ resource "aws_ecs_service" "my_first_service" {
     security_groups  = ["${aws_security_group.service_security_group.id}"]
   }
   tags = {
-      Name        = "littra-push-server"
+      Name        = "project-push-server"
       Environment = var.environment
       Creator     = "Terraform"
   }
@@ -104,7 +104,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
   name               = "ecsTaskExecutionRole"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
   tags = {
-      Name        = "littra-push-server"
+      Name        = "project-push-server"
       Environment = var.environment
       Creator     = "Terraform"
   }

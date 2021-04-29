@@ -1,5 +1,5 @@
-module "littra-push-backend" {
-  source = "./littra-push-backend"
+module "project-backend" {
+  source = "./backend"
 
   environment = var.environment
   image_tag   = var.image_tag

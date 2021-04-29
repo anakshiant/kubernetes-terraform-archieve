@@ -5,10 +5,10 @@ terraform {
     }
   }
   backend "remote" {
-    organization = "littra"
+    organization = "company"
 
     workspaces {
-      name = "littrapush-cli"
+      name = "company-cli"
     }
   }
 }

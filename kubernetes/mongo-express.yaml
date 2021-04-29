@@ -15,7 +15,7 @@ spec:
         app: mongo-express
     spec:
       containers:
-        - name: littra-mongo-express
+        - name: project-mongo-express
           image: mongo-express
           ports:
             - containerPort: 8081
@@ -23,17 +23,17 @@ spec:
             - name: ME_CONFIG_MONGODB_ADMINUSERNAME
               valueFrom:
                 secretKeyRef:
-                  name: littra-secret
+                  name: project-secret
                   key: mongo-root-username
             - name: ME_CONFIG_MONGODB_ADMINPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: littra-secret
+                  name: project-secret
                   key: mongo-root-password
             - name: ME_CONFIG_MONGODB_SERVER
               valueFrom:
                 configMapKeyRef:
-                  name: littra-config
+                  name: project-config
                   key: mongodb
 
 

@@ -1,5 +1,5 @@
 resource "aws_alb" "application_load_balancer" {
-  name               = "littra-push-load-balancer" # Naming our load balancer
+  name               = "project-push-load-balancer" # Naming our load balancer
   load_balancer_type = "application"
   subnets = [ # Referencing the default subnets
     "${aws_default_subnet.default_subnet_a.id}",
@@ -34,8 +34,8 @@ resource "aws_security_group" "load_balancer_security_group" {
   }
 }
 
-resource "aws_lb_target_group" "littra_push_target_group" {
-  name        = "littra-push-target-group"
+resource "aws_lb_target_group" "project_push_target_group" {
+  name        = "project-push-target-group"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "littra_push_target_group" {
 }
 
 data "aws_acm_certificate" "tl_issued" {
-  domain   = "littra.in"
+  domain   = "project.in"
   statuses = ["ISSUED"]
 }
 
@@ -75,6 +75,6 @@ resource "aws_lb_listener" "front_end" {
 
   default_action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.littra_push_target_group.arn}" # Referencing our tagrte group
+    target_group_arn = "${aws_lb_target_group.project_push_target_group.arn}" # Referencing our tagrte group
   }
 }

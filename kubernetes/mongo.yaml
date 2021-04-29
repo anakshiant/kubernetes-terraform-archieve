@@ -15,7 +15,7 @@ spec:
         app: mongo
     spec:
       containers:
-        - name: littra-mongo
+        - name: project-mongo
           image: mongo
           ports:
             - containerPort: 27017
@@ -23,12 +23,12 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: littra-secret
+                  name: project-secret
                   key: mongo-root-username
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: littra-secret
+                  name: project-secret
                   key: mongo-root-password
 
 
